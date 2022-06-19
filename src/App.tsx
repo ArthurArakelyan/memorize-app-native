@@ -10,6 +10,7 @@ import Providers from "./Providers";
 // pages
 import Home from "./pages/home";
 import AddMemoryPage from "./pages/addMemoryPage";
+import Zoom from "./pages/zoom";
 
 import SignIn from "./pages/signIn";
 import SignUp from "./pages/signUp";
@@ -56,6 +57,7 @@ const App = () => {
               <Stack.Navigator screenOptions={appNavigatorOptions} initialRouteName="home">
                 <Stack.Screen name="home" component={Home} />
                 <Stack.Screen name='add-memory' component={AddMemoryPage} />
+                <Stack.Screen name='zoom' component={Zoom} />
               </Stack.Navigator>
               :
               <Stack.Navigator screenOptions={appNotAuthNavigatorOptions} initialRouteName="sign-in">

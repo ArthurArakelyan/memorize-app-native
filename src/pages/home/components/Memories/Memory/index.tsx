@@ -1,5 +1,5 @@
 import React, {FC, useMemo} from "react";
-import {Dimensions, Image, StyleSheet, Text, View} from "react-native";
+import {Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 
 // components
 import {Avatar} from "../../../../../components/shared";
@@ -7,6 +7,9 @@ import {Avatar} from "../../../../../components/shared";
 // utils
 import {getMonthName} from "../../../../../utils/date";
 import addLeadingZero from "../../../../../utils/addLeadingZero";
+
+// hooks
+import useNavigate from "../../../../../hooks/useNavigate";
 
 // assets
 import {bold, medium, regular} from "../../../../../assets/global";
@@ -19,6 +22,8 @@ interface Props {
 }
 
 const Memory: FC<Props> = ({ memory }) => {
+  const navigate = useNavigate();
+
   const creationDate = useMemo(() => {
     const today = new Date();
     const date = new Date(memory.date);
@@ -36,6 +41,10 @@ const Memory: FC<Props> = ({ memory }) => {
     return `${day} in ${hours}:${minutes}`;
   }, [memory.date]);
 
+  const handleZoom = () => {
+    navigate('zoom', {url: memory.img});
+  };
+
   return (
     <View style={styles["memory"]}>
       <View style={styles["memory-content"]}>
@@ -49,7 +58,9 @@ const Memory: FC<Props> = ({ memory }) => {
         <Text style={styles["memory-title"]}>{memory.title}</Text>
         {memory.description && <Text style={styles["memory-description"]}>{memory.description}</Text>}
       </View>
-      <Image style={styles["memory-img"]} source={{ uri: memory.img }} />
+      <TouchableWithoutFeedback onPress={handleZoom} style={styles["memory-img"]}>
+        <Image style={styles["memory-img"]} source={{ uri: memory.img }} />
+      </TouchableWithoutFeedback>
     </View>
   );
 };
