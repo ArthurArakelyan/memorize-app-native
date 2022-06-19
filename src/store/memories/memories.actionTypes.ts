@@ -1,0 +1,5 @@
+export const GET_MEMORIES = 'GET_MEMORIES';
+export const ADD_MEMORY = 'ADD_MEMORY';
+export const DELETE_MEMORY = 'DELETE_MEMORY';
+export const GET_MEMORY_USER = 'GET_MEMORY_USER';
+export const SET_MEMORY_USER = 'SET_MEMORY_USER';
