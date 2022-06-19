@@ -31,7 +31,7 @@ const AppBarUser = () => {
     <TouchableRipple
       style={styles["avatar-wrapper"]}
       borderless
-      onPress={() => navigate('account')}
+      onPress={() => navigate('profile')}
     >
       <Avatar src={user?.img} style={styles["avatar"]} />
     </TouchableRipple>

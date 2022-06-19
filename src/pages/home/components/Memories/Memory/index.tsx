@@ -6,6 +6,7 @@ import {Avatar} from "../../../../../components/shared";
 
 // utils
 import {getMonthName} from "../../../../../utils/date";
+import addLeadingZero from "../../../../../utils/addLeadingZero";
 
 // assets
 import {bold, medium, regular} from "../../../../../assets/global";
@@ -19,10 +20,21 @@ interface Props {
 
 const Memory: FC<Props> = ({ memory }) => {
   const creationDate = useMemo(() => {
+    const today = new Date();
     const date = new Date(memory.date);
 
-    return `${getMonthName(date)} ${date.getDay()} in ${date.getHours()}:${date.getMinutes()}`;
-  }, []);
+    let day: number | string = date.getDate();
+    const minutes = addLeadingZero(date.getMinutes());
+    const hours = addLeadingZero(date.getHours());
+
+    if (today.getDate() === day) {
+      day = 'Today';
+    } else {
+      day = `${getMonthName(date)} ${day}`;
+    }
+
+    return `${day} in ${hours}:${minutes}`;
+  }, [memory.date]);
 
   return (
     <View style={styles["memory"]}>

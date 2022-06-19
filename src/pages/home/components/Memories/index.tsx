@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from "react";
-import {ActivityIndicator, FlatList, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 
 // components
@@ -32,7 +32,7 @@ const Memories: FC = () => {
     return (
       <View style={styles["section"]}>
         <Text style={[styles["section-text"], styles["error-text"]]}>Can't get memories</Text>
-        <Button onPress={() => !loading && dispatch(getMemories)}>Try Again</Button>
+        <Button onPress={() => dispatch(getMemories)}>Try Again</Button>
       </View>
     );
   }
@@ -56,6 +56,12 @@ const Memories: FC = () => {
 
   return (
     <FlatList
+      onEndReached={() => {}} // I guess it's for pagination
+      refreshControl={<RefreshControl
+        refreshing={false}
+        colors={[primaryColor]}
+        onRefresh={() => {}}
+      />}
       data={memories}
       renderItem={({ item }) => <Memory memory={item} />}
       keyExtractor={(item) => item.id}
@@ -67,7 +73,6 @@ const Memories: FC = () => {
 const styles = StyleSheet.create({
   'memories': {
     width: '100%',
-    // height: '100%',
     paddingHorizontal: 20,
   },
   'section': {
