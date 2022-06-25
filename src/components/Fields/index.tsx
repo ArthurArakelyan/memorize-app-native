@@ -1,4 +1,5 @@
 import React, {FC, memo} from "react";
+import {TextInputProps} from "react-native";
 
 // components
 import Field from "../Field";
@@ -7,7 +8,7 @@ import Field from "../Field";
 import IField from "../../types/Field";
 import {UserInput} from "../../types/UserInput";
 
-interface Props {
+interface Props extends TextInputProps {
   fields: IField[];
   data: UserInput;
   handleChange: (value: string, name: string) => void;
@@ -17,7 +18,7 @@ interface Props {
 
 const Fields: FC<Props> = ({ fields, submitted, data, handleSubmit, handleChange }) => {
   return (<>
-    {fields.map(({ name, label, validators }) => {
+    {fields.map(({ name, label, validators, ...props }) => {
       return (
         <Field
           key={name}
@@ -27,6 +28,7 @@ const Fields: FC<Props> = ({ fields, submitted, data, handleSubmit, handleChange
           onSubmitEditing={handleSubmit}
           validator={validators}
           submitted={submitted}
+          {...props}
         />
       );
     })}

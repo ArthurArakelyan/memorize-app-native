@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Image, StyleSheet, View} from "react-native";
 import {useDispatch} from "react-redux";
-import {Asset, launchImageLibrary} from "react-native-image-picker";
+import {launchImageLibrary} from "react-native-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AntIcon from "react-native-vector-icons/AntDesign";
 
@@ -93,7 +93,7 @@ const AddMemoryPage = () => {
         <View style={styles["uploaded-image-wrapper"]}>
           <Image style={styles["uploaded-image"]} source={{ uri: data.img?.uri }} />
           {!loading && <TouchableRipple style={styles["uploaded-image-icon"]} borderless onPress={handleRemoveImage}>
-            <AntIcon name='closecircle' color='red' size={30} />
+            <AntIcon name="closecircle" color="red" size={30} />
           </TouchableRipple>}
         </View>
         :
@@ -101,7 +101,7 @@ const AddMemoryPage = () => {
           buttonStyle={styles["upload"]}
           onPress={handleChooseImage}
         >
-          <Icon name='photo' style={styles["upload-icon"]} size={40} />
+          <Icon name="photo" style={styles["upload-icon"]} size={40} />
         </Button>
       }
 

@@ -12,7 +12,7 @@ const appNavigatorOptions: NativeStackNavigationOptions = {
   title: 'Memorize App',
   headerStyle: { backgroundColor: primaryColor },
   headerTintColor: '#ffffff',
-  animation: 'none',
+  animation: 'slide_from_right',
 };
 
 export default appNavigatorOptions;

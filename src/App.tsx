@@ -31,6 +31,8 @@ import {primaryDark} from "./assets/global";
 const Stack = createNativeStackNavigator();
 
 changeNavigationBarColor('#F2F2F2', true, false);
+StatusBar.setBackgroundColor(primaryDark);
+StatusBar.setBarStyle('light-content', true);
 
 const App = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -49,15 +51,14 @@ const App = () => {
 
   return (
     <Providers>
-      <StatusBar barStyle="light-content" backgroundColor={primaryDark} animated />
       <SafeAreaView>
         <KeyboardAvoidingView behavior="height" style={styles.app}>
           <NavigationContainer>
             {user ?
               <Stack.Navigator screenOptions={appNavigatorOptions} initialRouteName="home">
-                <Stack.Screen name="home" component={Home} />
-                <Stack.Screen name='add-memory' component={AddMemoryPage} />
-                <Stack.Screen name='zoom' component={Zoom} />
+                <Stack.Screen options={{ animation: 'fade' }} name="home" component={Home} />
+                <Stack.Screen name="add-memory" component={AddMemoryPage} />
+                <Stack.Screen name="zoom" component={Zoom} />
               </Stack.Navigator>
               :
               <Stack.Navigator screenOptions={appNotAuthNavigatorOptions} initialRouteName="sign-in">

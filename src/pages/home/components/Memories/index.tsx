@@ -10,7 +10,7 @@ import Memory from "./Memory";
 import useNavigate from "../../../../hooks/useNavigate";
 
 // actions
-import {getMemories} from "../../../../store/memories/memories.actions";
+import {getMemories, refreshMemories} from "../../../../store/memories/memories.actions";
 
 // types
 import {AppDispatch, RootState} from "../../../../store/store";
@@ -22,7 +22,7 @@ const Memories: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { memories, loading, error } = useSelector((state: RootState) => state.memories);
+  const { memories, loading, error, refreshing } = useSelector((state: RootState) => state.memories);
 
   useEffect(() => {
     dispatch(getMemories());
@@ -58,9 +58,9 @@ const Memories: FC = () => {
     <FlatList
       onEndReached={() => {}} // I guess it's for pagination
       refreshControl={<RefreshControl
-        refreshing={false}
+        refreshing={refreshing}
         colors={[primaryColor]}
-        onRefresh={() => {}}
+        onRefresh={() => dispatch(refreshMemories())}
       />}
       data={memories}
       renderItem={({ item }) => <Memory memory={item} />}

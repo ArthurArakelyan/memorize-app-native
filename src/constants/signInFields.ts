@@ -32,6 +32,7 @@ const singInFields: Field[] = [
         message: 'Password can contain minimum 6 symbols',
       },
     ],
+    secureTextEntry: true,
   },
 ];
 

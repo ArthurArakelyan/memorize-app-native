@@ -1,7 +1,14 @@
-import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
+import {AsyncThunkPayloadCreator, createAsyncThunk} from "@reduxjs/toolkit";
 
 // action types
-import {GET_MEMORIES, ADD_MEMORY, DELETE_MEMORY, GET_MEMORY_USER, SET_MEMORY_USER} from "./memories.actionTypes";
+import {
+  GET_MEMORIES,
+  ADD_MEMORY,
+  DELETE_MEMORY,
+  GET_MEMORY_USER,
+  SET_MEMORY_USER,
+  REFRESH_MEMORIES,
+} from "./memories.actionTypes";
 
 // services
 import memoriesService from "../../services/memoriesService";
@@ -15,7 +22,7 @@ import Memory from "../../types/Memory";
 import {MemoryData} from "../../types/UserInput";
 import {RootState} from "../store";
 
-export const getMemories = createAsyncThunk<Memory[] | null, void, {state: RootState}>(GET_MEMORIES, async (data, thunkAPI) => {
+const getMemoriesPayloadCreator: AsyncThunkPayloadCreator<Memory[], void, {state: RootState}> = async (data, thunkAPI) => {
   const memories = await memoriesService.getMemories();
 
   if (memories === undefined) {
@@ -25,14 +32,18 @@ export const getMemories = createAsyncThunk<Memory[] | null, void, {state: RootS
   return memories ? transformObjectToArray<Memory>(memories, (memory) => {
     const {user} = thunkAPI.getState();
 
-    if (user.name && user.id === memory.uid) {
+    if (user.id === memory.uid) {
       memory.user = user;
       return;
     }
 
     thunkAPI.dispatch(getMemoryUser(memory));
-  }) : memories;
-});
+  }) : [];
+}
+
+export const getMemories = createAsyncThunk<Memory[], void, {state: RootState}>(GET_MEMORIES, getMemoriesPayloadCreator);
+
+export const refreshMemories = createAsyncThunk<Memory[], void, {state: RootState}>(REFRESH_MEMORIES, getMemoriesPayloadCreator);
 
 export const addMemory = createAsyncThunk<Memory, MemoryData, {state: RootState}>(ADD_MEMORY, async (data, thunkAPI) => {
   const memory = await memoriesService.createMemory(data);
@@ -46,7 +57,7 @@ export const addMemory = createAsyncThunk<Memory, MemoryData, {state: RootState}
   return { ...memory, user };
 });
 
-export const getMemoryUser = createAsyncThunk(GET_MEMORY_USER, async (memory: Memory, thunkAPI) => {
+export const getMemoryUser = createAsyncThunk(GET_MEMORY_USER, async (memory: Memory) => {
   const user = await userService.getUser(memory.uid);
 
   if (!user) {
