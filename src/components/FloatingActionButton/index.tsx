@@ -5,14 +5,14 @@ import {FAB} from "react-native-paper";
 // assets
 import {purple} from "../../assets/global";
 
-interface Props {
+interface IFloatingActionButtonProps {
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
   icon?: string;
   disabled?: boolean;
 }
 
-const FloatingActionButton: FC<Props> = ({ style, onPress, icon = 'plus', disabled }) => {
+const FloatingActionButton: FC<IFloatingActionButtonProps> = ({ style, onPress, icon = 'plus', disabled }) => {
   return (
     <View style={styles["fab-wrapper"]}>
       <FAB

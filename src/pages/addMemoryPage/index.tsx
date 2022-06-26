@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Image, StyleSheet, View} from "react-native";
+import {Dimensions, Image, ScrollView, StyleSheet, View} from "react-native";
 import {useDispatch} from "react-redux";
 import {launchImageLibrary} from "react-native-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -66,7 +66,7 @@ const AddMemoryPage = () => {
       if (img && img.type?.includes('image')) {
         setData((prevState) => ({
           ...prevState,
-            img,
+          img,
         }));
       }
     });
@@ -78,7 +78,7 @@ const AddMemoryPage = () => {
   }));
 
   return (
-    <View style={styles["page"]}>
+    <ScrollView contentContainerStyle={styles["page"]}>
       <View style={styles["fields"]}>
         <Fields
           fields={addMemoryFields}
@@ -112,14 +112,13 @@ const AddMemoryPage = () => {
       >
         POST
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   'page': {
     width: '100%',
-    height: '100%',
     alignItems: 'center',
     padding: 20,
   },
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
   'uploaded-image-wrapper': {
     position: 'relative',
     width: '100%',
-    height: 250,
+    height: Dimensions.get('window').width - 40,
   },
   'uploaded-image-icon': {
     position: 'absolute',

@@ -5,11 +5,11 @@ import {Provider} from "react-redux";
 // store
 import store from "./store/store";
 
-interface Props {
+interface IProvidersProps {
   children: JSX.Element | JSX.Element[];
 }
 
-const Providers: FC<Props> = ({children}) => {
+const Providers: FC<IProvidersProps> = ({children}) => {
   return (
     <PaperProvider theme={DefaultTheme}>
       <Provider store={store}>

@@ -8,7 +8,7 @@ import Field from "../Field";
 import IField from "../../types/Field";
 import {UserInput} from "../../types/UserInput";
 
-interface Props extends TextInputProps {
+interface IFieldsProps extends TextInputProps {
   fields: IField[];
   data: UserInput;
   handleChange: (value: string, name: string) => void;
@@ -16,7 +16,7 @@ interface Props extends TextInputProps {
   submitted?: boolean;
 }
 
-const Fields: FC<Props> = ({ fields, submitted, data, handleSubmit, handleChange }) => {
+const Fields: FC<IFieldsProps> = ({ fields, submitted, data, handleSubmit, handleChange }) => {
   return (<>
     {fields.map(({ name, label, validators, ...props }) => {
       return (

@@ -2,13 +2,13 @@ import React, {FC} from "react";
 import {StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 import {Portal, Modal as PaperModal} from "react-native-paper";
 
-interface Props {
+interface IModalProps {
   style?: StyleProp<ViewStyle>;
   close: () => void;
   children: JSX.Element;
 }
 
-const Modal: FC<Props> = ({ style, close, children }) => {
+const Modal: FC<IModalProps> = ({ style, close, children }) => {
   return (
     <Portal>
       <PaperModal

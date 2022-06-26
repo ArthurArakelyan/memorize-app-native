@@ -4,3 +4,4 @@ export const DELETE_MEMORY = 'DELETE_MEMORY';
 export const GET_MEMORY_USER = 'GET_MEMORY_USER';
 export const SET_MEMORY_USER = 'SET_MEMORY_USER';
 export const REFRESH_MEMORIES = 'REFRESH_MEMORIES';
+export const UPDATE_LAST = 'UPDATE_LAST';
