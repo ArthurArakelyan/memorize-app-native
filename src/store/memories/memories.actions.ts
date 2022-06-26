@@ -1,4 +1,4 @@
-import {AsyncThunkPayloadCreator, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 
 // action types
 import {
@@ -8,6 +8,7 @@ import {
   GET_MEMORY_USER,
   SET_MEMORY_USER,
   REFRESH_MEMORIES,
+  UPDATE_LAST,
 } from "./memories.actionTypes";
 
 // services
@@ -15,42 +16,49 @@ import memoriesService from "../../services/memoriesService";
 import userService from "../../services/userService";
 
 // utils
-import transformObjectToArray from "../../utils/transformObjectToArray";
+import collectionToArray from "../../utils/collectionToArray";
 
 // types
 import Memory from "../../types/Memory";
 import {MemoryData} from "../../types/UserInput";
 import {RootState} from "../store";
 
-const getMemoriesPayloadCreator: AsyncThunkPayloadCreator<Memory[], void, {state: RootState}> = async (data, thunkAPI) => {
-  const memories = await memoriesService.getMemories();
+export const getMemories = createAsyncThunk<Memory[], void, {state: RootState}>(GET_MEMORIES, async (data, thunkAPI) => {
+  const { user, memories } = thunkAPI.getState();
 
-  if (memories === undefined) {
-    throw new Error('Get memories failed');
-  }
+  const response = await memoriesService.getMemories(memories.last);
 
-  return memories ? transformObjectToArray<Memory>(memories, (memory) => {
-    const {user} = thunkAPI.getState();
+  thunkAPI.dispatch(updateLast(response[response.length - 1]));
 
-    if (user.id === memory.uid) {
-      memory.user = user;
+  return collectionToArray<Memory>(response, (item) => {
+    if (user.id === item.uid) {
+      item.user = user;
       return;
     }
 
-    thunkAPI.dispatch(getMemoryUser(memory));
-  }) : [];
-}
+    thunkAPI.dispatch(getMemoryUser(item));
+  });
+});
 
-export const getMemories = createAsyncThunk<Memory[], void, {state: RootState}>(GET_MEMORIES, getMemoriesPayloadCreator);
+export const refreshMemories = createAsyncThunk<Memory[], void, {state: RootState}>(REFRESH_MEMORIES, async (data, thunkAPI) => {
+  const { user } = thunkAPI.getState();
 
-export const refreshMemories = createAsyncThunk<Memory[], void, {state: RootState}>(REFRESH_MEMORIES, getMemoriesPayloadCreator);
+  const response = await memoriesService.getMemories();
+
+  thunkAPI.dispatch(updateLast(response[response.length - 1]));
+
+  return collectionToArray<Memory>(response, (item) => {
+    if (user.id === item.uid) {
+      item.user = user;
+      return;
+    }
+
+    thunkAPI.dispatch(getMemoryUser(item));
+  });
+});
 
 export const addMemory = createAsyncThunk<Memory, MemoryData, {state: RootState}>(ADD_MEMORY, async (data, thunkAPI) => {
   const memory = await memoriesService.createMemory(data);
-
-  if (!memory) {
-    throw new Error('Create new memory failed');
-  }
 
   const {user} = thunkAPI.getState();
 
@@ -64,5 +72,7 @@ export const getMemoryUser = createAsyncThunk(GET_MEMORY_USER, async (memory: Me
     throw new Error('Get user from memory failed');
   }
 
-  return {id: memory.id, user};
+  return { id: memory.id, user };
 });
+
+export const updateLast = createAction<any>(UPDATE_LAST);

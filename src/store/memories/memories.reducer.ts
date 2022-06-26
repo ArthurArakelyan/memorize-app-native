@@ -1,4 +1,5 @@
 import {createReducer} from "@reduxjs/toolkit";
+import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 
 // actions
 import {
@@ -6,6 +7,7 @@ import {
   getMemories,
   getMemoryUser,
   refreshMemories,
+  updateLast,
 } from "./memories.actions";
 
 // types
@@ -16,18 +18,21 @@ interface State {
   loading: boolean;
   error: boolean;
   refreshing: boolean;
+  last?: FirebaseFirestoreTypes.QueryDocumentSnapshot<Memory>;
+  endReached: boolean;
 }
 
 const initialState: State = {
   memories: [],
-  loading: true,
+  loading: false,
   error: false,
   refreshing: false,
+  endReached: false,
 };
 
 const memoriesReducer = createReducer(initialState, (builder) => {
   builder.addCase(getMemories.fulfilled, (state, action) => {
-    state.memories = action.payload;
+    state.memories = [...state.memories, ...action.payload];
     state.loading = false;
     state.error = false;
   });
@@ -36,12 +41,15 @@ const memoriesReducer = createReducer(initialState, (builder) => {
     state.error = false;
   });
   builder.addCase(getMemories.rejected, (state) => {
+    state.memories = [];
     state.loading = false;
     state.error = true;
   });
   builder.addCase(refreshMemories.fulfilled, (state, action) => {
     state.memories = action.payload;
     state.refreshing = false;
+    state.endReached = false;
+    state.error = false;
   });
   builder.addCase(refreshMemories.pending, (state) => {
     state.refreshing = true;
@@ -59,6 +67,13 @@ const memoriesReducer = createReducer(initialState, (builder) => {
         break;
       }
     }
+  });
+  builder.addCase(updateLast, (state, action) => {
+    if (!action.payload) {
+      state.endReached = true;
+    }
+
+    state.last = action.payload;
   });
   builder.addDefaultCase((state) => state);
 });

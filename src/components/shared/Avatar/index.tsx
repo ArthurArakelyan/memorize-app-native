@@ -1,12 +1,12 @@
 import React, {FC, useMemo, useState, memo} from "react";
 import {Image, ImageStyle, StyleProp, StyleSheet} from "react-native";
 
-interface Props {
+interface IAvatarProps {
   src?: string;
   style?: StyleProp<ImageStyle>;
 }
 
-const Avatar: FC<Props> = ({ style, src }) => {
+const Avatar: FC<IAvatarProps> = ({ style, src }) => {
   const [error, setError] = useState<boolean>(false);
 
   const source = useMemo(() => {

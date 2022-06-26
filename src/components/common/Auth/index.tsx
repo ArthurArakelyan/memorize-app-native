@@ -1,23 +1,19 @@
 import React, {FC} from "react";
-import {StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
+import {TouchableRipple} from "react-native-paper";
 
 // components
-import Field from "../../Field";
 import Button from "../../Button";
-
-// types
-import IField from "../../../types/Field";
 
 // assets
 import {gray, medium, regular, secondaryColor} from "../../../assets/global";
-import {TouchableRipple} from "react-native-paper";
 
 interface Action {
   name: string;
   action: () => void;
 }
 
-interface Props {
+interface IAuthProps {
   title: string;
   loading: boolean;
   fields: JSX.Element | JSX.Element[];
@@ -25,7 +21,7 @@ interface Props {
   secondaryActions: Action[];
 }
 
-const Auth: FC<Props> = (props) => {
+const Auth: FC<IAuthProps> = (props) => {
   const {
     title,
     fields,
@@ -44,7 +40,7 @@ const Auth: FC<Props> = (props) => {
         </View>
 
         <View style={styles["auth-actions"]}>
-          <Button onPress={loading ? undefined : primaryAction.action} loading={loading }>
+          <Button onPress={loading ? undefined : primaryAction.action} loading={loading}>
             {primaryAction.name}
           </Button>
           {secondaryActions.map(({name, action}) => {

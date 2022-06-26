@@ -1,4 +1,4 @@
-import database from "@react-native-firebase/database";
+import firestore from "@react-native-firebase/firestore";
 
 // services
 import authService from "./authService";
@@ -7,32 +7,24 @@ import authService from "./authService";
 import User from "../types/User";
 
 class UserService {
-  async getUser(user?: string): Promise<User | void> {
-    try {
-      const uid = user || authService.uid;
+  async getUser(user?: string): Promise<User | undefined> {
+    const uid = user || authService.uid;
 
-      const response = await database()
-        .ref(`users/${uid}`)
-        .once('value');
+    const response = await firestore()
+      .collection<User>('Users')
+      .doc(uid)
+      .get();
 
-      return response.val();
-    } catch (e) {
-      console.error('Error in getUser()', e);
-      e instanceof Error && alert(e.message);
-    }
+    return response.data();
   }
 
-  async createUser(data: User): Promise<User | void> {
-    try {
-      await database()
-        .ref(`users/${data.id}`)
-        .set(data);
+  async createUser(data: User): Promise<User> {
+    await firestore()
+      .collection('Users')
+      .doc(data.id)
+      .set(data);
 
-      return data;
-    } catch (e) {
-      console.error('Error in createUser()', e);
-      e instanceof Error && alert(e.message);
-    }
+    return data;
   }
 }
 

@@ -20,11 +20,11 @@ import signInFields from "../../constants/signInFields";
 import {AppDispatch} from "../../store/store";
 import {SignInData} from "../../types/UserInput";
 
-interface Props {
+interface ISignInProps {
   navigation: NavigationProp<any>;
 }
 
-const SignIn: FC<Props> = ({ navigation }) => {
+const SignIn: FC<ISignInProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const [data, setData] = useState<SignInData>({

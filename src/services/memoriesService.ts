@@ -1,84 +1,84 @@
-import database from "@react-native-firebase/database";
+import firestore, {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+
+// services
+import authService from "./authService";
+
+// utils
+import getImageBlob from "../utils/getImageBlob";
 
 // types
 import Memory from "../types/Memory";
 import {MemoryData} from "../types/UserInput";
-import authService from "./authService";
-import getImageBlob from "../utils/getImageBlob";
 
 class MemoriesService {
-  async getMemories(): Promise<Memory[] | null | undefined> {
-    try {
-      const response = await database()
-        .ref('memories')
-        .once('value');
+  async getMemories(last?: FirebaseFirestoreTypes.QueryDocumentSnapshot<Memory>): Promise<FirebaseFirestoreTypes.QueryDocumentSnapshot<Memory>[]> {
+    if (last) {
+      const response = await firestore()
+        .collection<Memory>('Memories')
+        .orderBy('dateCode', 'desc')
+        .startAfter(last)
+        .limit(10)
+        .get();
 
-      return response.val();
-    } catch (e) {
-      console.error('Error in getMemories()', e);
-      e instanceof Error && alert(e.message);
+      return response.docs;
     }
+
+    const response = await firestore()
+      .collection<Memory>('Memories')
+      .limit(10)
+      .orderBy('dateCode', 'desc')
+      .get();
+
+    return response.docs;
   }
 
-  async getMemory(id: string): Promise<Memory | void> {
-    try {
-      const response = await database()
-        .ref(`memories/${id}`)
-        .once('value');
+  async getMemory(id: string): Promise<Memory | undefined> {
+    const response = await firestore()
+      .collection<Memory>('Memories')
+      .doc(id)
+      .get();
 
-      return response.val();
-    } catch (e) {
-      console.error('Error in getMemory()', e);
-      e instanceof Error && alert(e.message);
-    }
+    return response.data();
   }
 
-  async createMemory(memory: MemoryData): Promise<Memory | void> {
-    try {
-      const uid = authService.uid;
+  async createMemory(memory: MemoryData): Promise<Memory> {
+    const uid = authService.uid;
 
-      const reference = database().ref('memories').push();
-      const id = reference.key as string;
+    const reference = await firestore()
+      .collection('Memories')
+      .doc();
 
-      // setting image of memory to storage
-      const storageReference = storage().ref(`memories/${id}`);
+    const id = reference.id;
 
-      const blob = await getImageBlob(memory.img?.uri as string);
+    // setting image of memory to storage
+    const storageReference = storage().ref(`memories/${id}`);
 
-      await storageReference.put(blob);
+    const blob = await getImageBlob(memory.img?.uri as string);
 
-      const img = await storageReference.getDownloadURL();
+    await storageReference.put(blob);
 
-      // setting memory to db
-      const newMemory = {
-        ...memory,
-        img,
-        uid,
-        date: new Date().toISOString(),
-      };
+    const img = await storageReference.getDownloadURL();
 
-      await reference.set(newMemory);
+    // setting memory to db
+    const newMemory = {
+      ...memory,
+      img,
+      uid,
+      date: new Date().toISOString(),
+      dateCode: Date.now(),
+    };
 
-      return { ...newMemory, id };
-    } catch (e) {
-      console.error('Error in createMemory()', e);
-      e instanceof Error && alert(e.message);
-    }
+    await reference.set(newMemory);
+
+    return { ...newMemory, id };
   }
 
-  async deleteMemory(id: string): Promise<boolean> {
-    try {
-      await database()
-        .ref(`memories/${id}`)
-        .remove();
-
-      return true;
-    } catch (e) {
-      console.error('Error in deleteMemory()', e);
-      e instanceof Error && alert(e.message);
-      return false;
-    }
+  async deleteMemory(id: string): Promise<void> {
+    await firestore()
+      .collection('Memories')
+      .doc(id)
+      .delete();
   }
 }
 

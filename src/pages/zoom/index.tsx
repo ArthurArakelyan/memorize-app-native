@@ -3,12 +3,12 @@ import {StyleSheet} from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
 import {NavigationProp, RouteProp} from "@react-navigation/native";
 
-interface Props {
+interface IZoomProps {
   route: RouteProp<{ params: { url: string } }, 'params'>;
   navigation: NavigationProp<any>;
 }
 
-const Zoom: FC<Props> = ({navigation, route}) => {
+const Zoom: FC<IZoomProps> = ({navigation, route}) => {
   const handleGoBack = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();

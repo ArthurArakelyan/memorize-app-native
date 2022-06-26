@@ -11,12 +11,12 @@ import {
 // assets
 import {medium, primaryColor} from "../../assets/global";
 
-interface Props extends TouchableNativeFeedbackProps {
+interface IButtonProps extends TouchableNativeFeedbackProps {
   loading?: boolean;
   buttonStyle?: object;
 }
 
-const Button: FC<Props> = ({loading, buttonStyle, children, ...props}) => {
+const Button: FC<IButtonProps> = ({loading, buttonStyle, children, ...props}) => {
   return (
     <TouchableNativeFeedback {...props}>
       <View style={[styles.button, loading && styles["button-loading"], buttonStyle]}>

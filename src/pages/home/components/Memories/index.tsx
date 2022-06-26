@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -22,11 +22,22 @@ const Memories: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { memories, loading, error, refreshing } = useSelector((state: RootState) => state.memories);
+  const [isFirstEnter, setIsFirstEnter] = useState(true);
+
+  const { memories, loading, error, refreshing, endReached } = useSelector((state: RootState) => state.memories);
 
   useEffect(() => {
     dispatch(getMemories());
+    setIsFirstEnter(false);
   }, []);
+
+  const handleReachEnd = () => {
+    if (loading || refreshing || endReached) {
+      return;
+    }
+
+    dispatch(getMemories());
+  };
 
   if (error) {
     return (
@@ -37,7 +48,11 @@ const Memories: FC = () => {
     );
   }
 
-  if (loading) {
+  if (isFirstEnter) {
+    return null;
+  }
+
+  if (loading && !memories.length) {
     return (
       <View style={styles["section"]}>
         <ActivityIndicator size={100} color={primaryColor} />
@@ -56,7 +71,7 @@ const Memories: FC = () => {
 
   return (
     <FlatList
-      onEndReached={() => {}} // I guess it's for pagination
+      onEndReached={handleReachEnd}
       refreshControl={<RefreshControl
         refreshing={refreshing}
         colors={[primaryColor]}

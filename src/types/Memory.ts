@@ -7,6 +7,7 @@ interface Memory {
   title: string;
   description: string;
   date: Date | string;
+  dateCode: number;
   img: string;
 }
 

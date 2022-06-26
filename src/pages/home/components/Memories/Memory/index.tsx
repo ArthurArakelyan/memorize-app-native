@@ -17,11 +17,11 @@ import {bold, medium, regular} from "../../../../../assets/global";
 // types
 import IMemory from "../../../../../types/Memory";
 
-interface Props {
+interface IMemoryProps {
   memory: IMemory;
 }
 
-const Memory: FC<Props> = ({ memory }) => {
+const Memory: FC<IMemoryProps> = ({ memory }) => {
   const navigate = useNavigate();
 
   const creationDate = useMemo(() => {
@@ -56,7 +56,7 @@ const Memory: FC<Props> = ({ memory }) => {
           </View>
         </View>
         <Text style={styles["memory-title"]}>{memory.title}</Text>
-        {memory.description && <Text style={styles["memory-description"]}>{memory.description}</Text>}
+        {!!memory.description && <Text style={styles["memory-description"]}>{memory.description}</Text>}
       </View>
       <TouchableWithoutFeedback onPress={handleZoom} style={styles["memory-img"]}>
         <Image style={styles["memory-img"]} source={{ uri: memory.img }} />
