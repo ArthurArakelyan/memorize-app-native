@@ -1,7 +1,7 @@
 import auth, {FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 // types
-import {NewPasswordData, SignUpData} from "../types/UserInput";
+import {ForgetPasswordData, NewPasswordData, SignUpData} from "../types/UserInput";
 
 type AuthUser = FirebaseAuthTypes.User | void;
 
@@ -56,6 +56,15 @@ class AuthService {
     }
 
     await user.updateEmail(email);
+  }
+
+  async resetPassword({email}: ForgetPasswordData): Promise<void> {
+    try {
+      await auth().sendPasswordResetEmail(email);
+      alert('Password reset email successfully sent\n \nPlease check your Email');
+    } catch (e) {
+      alert('Something went wrong');
+    }
   }
 
   get uid(): string {

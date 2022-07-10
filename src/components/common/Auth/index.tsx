@@ -1,6 +1,5 @@
 import React, {FC} from "react";
-import {StyleSheet, Text, View} from "react-native";
-import {TouchableRipple} from "react-native-paper";
+import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 
 // components
 import Button from "../../Button";
@@ -18,7 +17,8 @@ interface IAuthProps {
   loading: boolean;
   fields: JSX.Element | JSX.Element[];
   primaryAction: Action;
-  secondaryActions: Action[];
+  secondaryAction?: Action;
+  thirdAction?: Action;
 }
 
 const Auth: FC<IAuthProps> = (props) => {
@@ -26,7 +26,8 @@ const Auth: FC<IAuthProps> = (props) => {
     title,
     fields,
     primaryAction,
-    secondaryActions,
+    secondaryAction,
+    thirdAction,
     loading,
   } = props;
 
@@ -43,16 +44,24 @@ const Auth: FC<IAuthProps> = (props) => {
           <Button onPress={loading ? undefined : primaryAction.action} loading={loading}>
             {primaryAction.name}
           </Button>
-          {secondaryActions.map(({name, action}) => {
-            return (
-              <TouchableRipple style={{borderRadius: 3}} borderless key={name} onPress={action}>
-                <Text style={styles["auth-actions-secondary"]}>
-                  {name}
-                </Text>
-              </TouchableRipple>
-            )
-          })}
+          {secondaryAction && <TouchableOpacity activeOpacity={0.6} onPress={secondaryAction.action}>
+            <Text style={styles["auth-actions-secondary"]}>
+              {secondaryAction.name}
+            </Text>
+          </TouchableOpacity>}
         </View>
+
+        {thirdAction &&
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={thirdAction.action}
+            style={styles["auth-actions-third__wrapper"]}
+          >
+            <Text style={styles["auth-actions-third"]}>
+              {thirdAction.name}
+            </Text>
+          </TouchableOpacity>
+        }
       </View>
     </View>
   );
@@ -100,6 +109,16 @@ const styles = StyleSheet.create({
     fontFamily: regular,
     paddingVertical: 5,
     paddingHorizontal: 10,
+    textDecorationLine: 'underline',
+  },
+  'auth-actions-third__wrapper': {
+    marginTop: 15,
+    paddingVertical: 5,
+  },
+  'auth-actions-third': {
+    color: secondaryColor,
+    fontSize: 18,
+    fontFamily: regular,
     textDecorationLine: 'underline',
   },
 });

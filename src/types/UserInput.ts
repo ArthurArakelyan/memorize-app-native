@@ -22,6 +22,10 @@ export interface SignInData extends UserInput {
   password: string;
 }
 
+export interface ForgetPasswordData extends UserInput {
+  email: string;
+}
+
 export interface MemoryData extends UploadedImage {
   title: string;
   description: string;
