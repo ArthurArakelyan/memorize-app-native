@@ -7,6 +7,9 @@ import authService from "./authService";
 // utils
 import getImageBlob from "../utils/getImageBlob";
 
+// constants
+import collections from "../constants/collections";
+
 // types
 import Memory from "../types/Memory";
 import {MemoryData} from "../types/UserInput";
@@ -15,7 +18,7 @@ class MemoriesService {
   async getMemories(last?: FirebaseFirestoreTypes.QueryDocumentSnapshot<Memory>): Promise<FirebaseFirestoreTypes.QueryDocumentSnapshot<Memory>[]> {
     if (last) {
       const response = await firestore()
-        .collection<Memory>('Memories')
+        .collection<Memory>(collections.memories)
         .orderBy('dateCode', 'desc')
         .startAfter(last)
         .limit(10)
@@ -25,7 +28,7 @@ class MemoriesService {
     }
 
     const response = await firestore()
-      .collection<Memory>('Memories')
+      .collection<Memory>(collections.memories)
       .limit(10)
       .orderBy('dateCode', 'desc')
       .get();
@@ -35,18 +38,28 @@ class MemoriesService {
 
   async getMemory(id: string): Promise<Memory | undefined> {
     const response = await firestore()
-      .collection<Memory>('Memories')
+      .collection<Memory>(collections.memories)
       .doc(id)
       .get();
 
     return response.data();
   }
 
+  async getUserMemories(uid: string): Promise<FirebaseFirestoreTypes.QueryDocumentSnapshot<Memory>[]> {
+    const response = await firestore()
+      .collection<Memory>('Memories')
+      .where('uid', '==', uid)
+      .orderBy('dateCode', 'desc')
+      .get();
+
+    return response.docs;
+  }
+
   async createMemory(memory: MemoryData): Promise<Memory> {
     const uid = authService.uid;
 
     const reference = await firestore()
-      .collection('Memories')
+      .collection(collections.memories)
       .doc();
 
     const id = reference.id;
@@ -76,9 +89,11 @@ class MemoriesService {
 
   async deleteMemory(id: string): Promise<void> {
     await firestore()
-      .collection('Memories')
+      .collection(collections.memories)
       .doc(id)
       .delete();
+
+    // todo: delete an image of memory from storage
   }
 }
 

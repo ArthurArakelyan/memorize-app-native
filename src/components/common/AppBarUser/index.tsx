@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {StyleSheet} from "react-native";
 import {TouchableRipple} from "react-native-paper";
 import {useDispatch, useSelector} from "react-redux";
+import {useRoute} from "@react-navigation/native";
 
 // components
 import {Avatar} from "../../shared";
@@ -18,6 +19,7 @@ import {AppDispatch, RootState} from "../../../store/store";
 const AppBarUser = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const {name} = useRoute();
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -27,11 +29,15 @@ const AppBarUser = () => {
     }
   }, []);
 
+  if (name === 'profile' || name === 'zoom') {
+    return null;
+  }
+
   return (
     <TouchableRipple
       style={styles["avatar-wrapper"]}
       borderless
-      onPress={() => navigate('profile')}
+      onPress={() => navigate('profile', {uid: user.id})}
     >
       <Avatar src={user?.img} style={styles["avatar"]} />
     </TouchableRipple>

@@ -45,7 +45,7 @@ const SignUp: FC<ISignUpProps> = ({ navigation }) => {
     setLoading(true);
 
     dispatch(signUp(data))
-      .catch(() => setLoading(false));
+      .finally(() => setLoading(false));
   };
 
   const handleRedirect = () => {

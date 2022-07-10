@@ -18,6 +18,7 @@ const singInFields: Field[] = [
         message: 'Email is not correct',
       },
     ],
+    keyboardType: 'email-address',
   },
   {
     name: 'password',
@@ -29,7 +30,7 @@ const singInFields: Field[] = [
       },
       {
         min: 6,
-        message: 'Password can contain minimum 6 symbols',
+        message: 'Minimum 6 symbols',
       },
     ],
     secureTextEntry: true,

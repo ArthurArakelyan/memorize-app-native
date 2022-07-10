@@ -13,7 +13,7 @@ import {darkColor, gray, regular} from "../../assets/global";
 interface FieldProps extends TextInputProps {
   submitted?: boolean;
   validator?: Validator[];
-  label: string;
+  label?: string;
   viewStyle?: StyleProp<ViewStyle>;
 }
 
@@ -43,7 +43,7 @@ const Field: FC<FieldProps> = ({ label, submitted, validator, viewStyle, onChang
 
   return (
     <View style={[styles["field"], viewStyle]}>
-      <Text style={styles["field-label"]}>{label}</Text>
+      {!!label && <Text style={styles["field-label"]}>{label}</Text>}
       <TextInput
         selectionColor="#000" style={[styles["field-input"], style]}
         onChangeText={handleChange}

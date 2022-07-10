@@ -1,7 +1,16 @@
 import {createReducer} from "@reduxjs/toolkit";
 
 // actions
-import {getUser, signIn, signOut, signUp} from "./user.actions";
+import {
+  deleteUserAvatar,
+  getUser,
+  signIn,
+  signOut,
+  signUp,
+  uploadUserAvatar,
+  changeUserField,
+  changeUserEmail,
+} from "./user.actions";
 
 // types
 import User from "../../types/User";
@@ -34,6 +43,18 @@ const userReducer = createReducer(initialState, (builder) => {
       ...state,
       ...action.payload,
     };
+  });
+  builder.addCase(uploadUserAvatar.fulfilled, (state, action) => {
+    state.img = action.payload;
+  });
+  builder.addCase(deleteUserAvatar.fulfilled, (state) => {
+    state.img = '';
+  });
+  builder.addCase(changeUserField.fulfilled, (state, action) => {
+    state[action.payload.name] = action.payload.value;
+  });
+  builder.addCase(changeUserEmail.fulfilled, (state, action) => {
+    state.email = action.payload;
   });
   builder.addDefaultCase((state) => state);
 });

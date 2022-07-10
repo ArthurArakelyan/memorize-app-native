@@ -11,11 +11,11 @@ interface IProvidersProps {
 
 const Providers: FC<IProvidersProps> = ({children}) => {
   return (
-    <PaperProvider theme={DefaultTheme}>
-      <Provider store={store}>
-        {children}
-      </Provider>
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider theme={DefaultTheme}>
+          {children}
+      </PaperProvider>
+    </Provider>
   );
 };
 

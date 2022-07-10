@@ -1,7 +1,7 @@
 import auth, {FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 // types
-import {SignUpData} from "../types/UserInput";
+import {NewPasswordData, SignUpData} from "../types/UserInput";
 
 type AuthUser = FirebaseAuthTypes.User | void;
 
@@ -26,22 +26,43 @@ class AuthService {
     }
   }
 
-  async signOut(): Promise<boolean> {
-    try {
-      await auth().signOut();
-      return true;
-    } catch (e) {
-      console.error('Error in signOut()', e);
-      e instanceof Error && alert(e.message);
-      return false;
+  async signOut(): Promise<void> {
+    await auth().signOut();
+  }
+
+  async changePassword({oldPassword, password}: NewPasswordData): Promise<void> {
+    let user = auth().currentUser;
+
+    if (!user) {
+      throw new Error('User is not signed in');
     }
+
+    await auth().signInWithEmailAndPassword(user.email as string, oldPassword);
+
+    user = auth().currentUser;
+
+    if (!user) {
+      throw new Error('User is not signed in');
+    }
+
+    await user.updatePassword(password);
+  }
+
+  async changeEmail(email: string): Promise<void> {
+    const user = auth().currentUser;
+
+    if (!user) {
+      throw new Error('User is not signed in');
+    }
+
+    await user.updateEmail(email);
   }
 
   get uid(): string {
     const uid = auth().currentUser?.uid;
 
     if (!uid) {
-      throw new Error('User is not registered');
+      throw new Error('User is not signed in');
     }
 
     return uid;

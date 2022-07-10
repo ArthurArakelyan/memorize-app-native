@@ -1,7 +1,19 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
+// actions
+import {changeProfileAvatar, changeProfileField} from "../profile/profile.actions";
+
 // action types
-import {SIGN_IN, SIGN_UP, SIGN_OUT, GET_USER} from "./user.actionTypes";
+import {
+  SIGN_IN,
+  SIGN_UP,
+  SIGN_OUT,
+  GET_USER,
+  UPLOAD_USER_AVATAR,
+  DELETE_USER_AVATAR,
+  CHANGE_USER_FIELD,
+  CHANGE_USER_EMAIL,
+} from "./user.actionTypes";
 
 // services
 import authService from "../../services/authService";
@@ -9,6 +21,7 @@ import userService from "../../services/userService";
 
 // types
 import {SignInData, SignUpData} from "../../types/UserInput";
+import {IUpdateUserFieldData} from "../../types/User";
 
 export const signIn = createAsyncThunk(SIGN_IN, async (data: SignInData, thunkAPI) => {
   const user = await authService.signIn(data.email, data.password);
@@ -36,29 +49,16 @@ export const signUp = createAsyncThunk(SIGN_UP, async (data: SignUpData, thunkAP
     return;
   }
 
-  const userInDb = await userService.createUser({
+  return await userService.createUser({
     name: data.name,
     email: data.email,
     id: user.uid,
     img: '',
   });
-
-  if (!userInDb) {
-    thunkAPI.rejectWithValue('Set user to db in sign-up stage failed');
-    return;
-  }
-
-  return userInDb;
 });
 
-export const signOut = createAsyncThunk(SIGN_OUT, async (data, thunkAPI) => {
-  const isSignedOut = await authService.signOut();
-
-  if (!isSignedOut) {
-    thunkAPI.rejectWithValue('Sign out failed');
-  }
-
-  return isSignedOut;
+export const signOut = createAsyncThunk(SIGN_OUT, async () => {
+  await authService.signOut();
 });
 
 export const getUser = createAsyncThunk(GET_USER, async (data, thunkAPI) => {
@@ -69,4 +69,35 @@ export const getUser = createAsyncThunk(GET_USER, async (data, thunkAPI) => {
   }
 
   return user;
+});
+
+export const changeUserField = createAsyncThunk<IUpdateUserFieldData, IUpdateUserFieldData>(CHANGE_USER_FIELD, async (data, thunkAPI) => {
+  await userService.changeUserField(data.name, data.value);
+
+  thunkAPI.dispatch(changeProfileField(data));
+
+  return data;
+});
+
+export const changeUserEmail = createAsyncThunk<string, string>(CHANGE_USER_EMAIL, async (data, thunkAPI) => {
+  await authService.changeEmail(data);
+  await userService.changeUserField('email', data);
+
+  thunkAPI.dispatch(changeProfileField({name: 'email', value: data}));
+
+  return data;
+});
+
+export const uploadUserAvatar = createAsyncThunk<string, string>(UPLOAD_USER_AVATAR, async (data, thunkAPI) => {
+  const img = await userService.uploadUserAvatar(data);
+
+  thunkAPI.dispatch(changeProfileAvatar(img));
+
+  return img;
+});
+
+export const deleteUserAvatar = createAsyncThunk(DELETE_USER_AVATAR, async (data, thunkAPI) => {
+  await userService.deleteUserAvatar();
+
+  thunkAPI.dispatch(changeProfileAvatar(''));
 });
