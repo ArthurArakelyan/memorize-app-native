@@ -68,10 +68,10 @@ const SignUp: FC<ISignUpProps> = ({ navigation }) => {
         name: 'Sign up',
         action: handleSubmit,
       }}
-      secondaryActions={[{
+      secondaryAction={{
         name: 'Log in',
         action: handleRedirect,
-      }]}
+      }}
       loading={loading}
     />
   );

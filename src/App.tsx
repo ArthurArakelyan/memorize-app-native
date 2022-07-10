@@ -16,6 +16,7 @@ import Zoom from "./pages/zoom";
 
 import SignIn from "./pages/signIn";
 import SignUp from "./pages/signUp";
+import ForgetPassword from "./pages/forgetPassword";
 
 // hooks
 import useAuth from "./hooks/useAuth";
@@ -68,6 +69,7 @@ const App = () => {
               <Stack.Navigator screenOptions={appNotAuthNavigatorOptions} initialRouteName="sign-in">
                 <Stack.Screen name="sign-in" component={SignIn} />
                 <Stack.Screen name="sign-up" component={SignUp} />
+                <Stack.Screen name="forget-password" component={ForgetPassword} />
               </Stack.Navigator>
             }
           </NavigationContainer>

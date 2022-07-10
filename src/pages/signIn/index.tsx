@@ -53,6 +53,10 @@ const SignIn: FC<ISignInProps> = ({ navigation }) => {
     navigation.navigate('sign-up');
   };
 
+  const handleForget = () => {
+    navigation.navigate('forget-password');
+  };
+
   return (
     <Auth
       title='Login'
@@ -67,12 +71,14 @@ const SignIn: FC<ISignInProps> = ({ navigation }) => {
         name: 'Sign in',
         action: handleSubmit,
       }}
-      secondaryActions={[
-        {
-          name: 'Sign up',
-          action: handleRedirect,
-        }
-      ]}
+      secondaryAction={{
+        name: 'Sign up',
+        action: handleRedirect,
+      }}
+      thirdAction={{
+        name: 'Forget Password',
+        action: handleForget,
+      }}
       loading={loading}
     />
   );
