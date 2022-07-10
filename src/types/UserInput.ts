@@ -26,3 +26,8 @@ export interface MemoryData extends UploadedImage {
   title: string;
   description: string;
 }
+
+export interface NewPasswordData extends UserInput {
+  oldPassword: string;
+  password: string;
+}

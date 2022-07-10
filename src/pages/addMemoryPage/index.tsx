@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Dimensions, Image, ScrollView, StyleSheet, View} from "react-native";
 import {useDispatch} from "react-redux";
-import {launchImageLibrary} from "react-native-image-picker";
+import {TouchableRipple} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AntIcon from "react-native-vector-icons/AntDesign";
 
@@ -15,6 +15,7 @@ import {addMemory} from "../../store/memories/memories.actions";
 // utils
 import handleFormDataChange from "../../utils/handleFormDataChange";
 import validate from "../../utils/validate";
+import upload from "../../utils/upload";
 
 // hooks
 import useNavigate from "../../hooks/useNavigate";
@@ -28,7 +29,6 @@ import {AppDispatch} from "../../store/store";
 
 // assets
 import {purple} from "../../assets/global";
-import {TouchableRipple} from "react-native-paper";
 
 const AddMemoryPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -60,15 +60,11 @@ const AddMemoryPage = () => {
   const handleChange = handleFormDataChange<MemoryData>(setData);
 
   const handleChooseImage = () => {
-    launchImageLibrary({mediaType: 'photo', selectionLimit: 1}, (response) => {
-      const img = response.assets?.[0];
-
-      if (img && img.type?.includes('image')) {
-        setData((prevState) => ({
-          ...prevState,
-          img,
-        }));
-      }
+    upload((img) => {
+      setData((prevState) => ({
+        ...prevState,
+        img,
+      }));
     });
   };
 

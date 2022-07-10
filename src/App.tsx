@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {KeyboardAvoidingView, SafeAreaView, StatusBar, StyleSheet} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import changeNavigationBarColor from "react-native-navigation-bar-color";
 
 // components
 import Providers from "./Providers";
@@ -10,6 +10,8 @@ import Providers from "./Providers";
 // pages
 import Home from "./pages/home";
 import AddMemoryPage from "./pages/addMemoryPage";
+import Profile from "./pages/profile";
+import ProfileEdit from "./pages/profileEdit";
 import Zoom from "./pages/zoom";
 
 import SignIn from "./pages/signIn";
@@ -58,6 +60,8 @@ const App = () => {
               <Stack.Navigator screenOptions={appNavigatorOptions} initialRouteName="home">
                 <Stack.Screen options={{ animation: 'fade' }} name="home" component={Home} />
                 <Stack.Screen name="add-memory" component={AddMemoryPage} />
+                <Stack.Screen name="profile" component={Profile} />
+                <Stack.Screen name="profile-edit" component={ProfileEdit} options={{ title: 'Profile Edit' }} />
                 <Stack.Screen name="zoom" component={Zoom} />
               </Stack.Navigator>
               :

@@ -5,14 +5,15 @@ import {Portal, Modal as PaperModal} from "react-native-paper";
 interface IModalProps {
   style?: StyleProp<ViewStyle>;
   close: () => void;
+  visible?: boolean;
   children: JSX.Element;
 }
 
-const Modal: FC<IModalProps> = ({ style, close, children }) => {
+const Modal: FC<IModalProps> = ({ style, close, visible = true, children }) => {
   return (
     <Portal>
       <PaperModal
-        visible
+        visible={visible}
         dismissable
         onDismiss={close}
       >
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   'modal': {
-    width: '70%',
+    width: '80%',
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 10,

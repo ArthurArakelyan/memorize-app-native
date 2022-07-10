@@ -1,5 +1,5 @@
 import React, {FC, useMemo} from "react";
-import {Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 
 // components
 import {Avatar} from "../../../../../components/shared";
@@ -45,11 +45,17 @@ const Memory: FC<IMemoryProps> = ({ memory }) => {
     navigate('zoom', {url: memory.img});
   };
 
+  const handleRedirectToUser = () => {
+    navigate('profile', {uid: memory.uid});
+  };
+
   return (
     <View style={styles["memory"]}>
       <View style={styles["memory-content"]}>
         <View style={styles["memory-user"]}>
-          <Avatar src={memory.user?.img} />
+          <TouchableOpacity activeOpacity={1} onPress={handleRedirectToUser}>
+            <Avatar src={memory.user?.img} />
+          </TouchableOpacity>
           <View style={styles["memory-user-info"]}>
             <Text style={styles["memory-user-name"]}>{memory.user?.name}</Text>
             <Text style={styles["memory-user-date"]}>{creationDate}</Text>

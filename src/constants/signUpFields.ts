@@ -14,8 +14,8 @@ const signUpFields: Field[] = [
         message: 'Name is required',
       },
       {
-        max: 120,
-        message: 'Name can\'t contain more than 120 symbols',
+        max: 64,
+        message: 'Name can\'t contain more than 64 symbols',
       },
     ],
   },
@@ -32,6 +32,7 @@ const signUpFields: Field[] = [
         message: 'Email is not correct',
       },
     ],
+    keyboardType: 'email-address',
   },
   {
     name: 'password',
@@ -43,7 +44,7 @@ const signUpFields: Field[] = [
       },
       {
         min: 6,
-        message: 'Password can contain minimum 6 symbols',
+        message: 'Minimum 6 symbols',
       },
     ],
     secureTextEntry: true,

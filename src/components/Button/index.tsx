@@ -6,6 +6,8 @@ import {
   TouchableNativeFeedback,
   TouchableNativeFeedbackProps,
   View,
+  ViewStyle,
+  StyleProp,
 } from "react-native";
 
 // assets
@@ -13,18 +15,22 @@ import {medium, primaryColor} from "../../assets/global";
 
 interface IButtonProps extends TouchableNativeFeedbackProps {
   loading?: boolean;
-  buttonStyle?: object;
+  buttonStyle?: StyleProp<ViewStyle>;
+  icon?: JSX.Element;
 }
 
-const Button: FC<IButtonProps> = ({loading, buttonStyle, children, ...props}) => {
+const Button: FC<IButtonProps> = ({loading, disabled, buttonStyle, icon, children, ...props}) => {
   return (
-    <TouchableNativeFeedback {...props}>
-      <View style={[styles.button, loading && styles["button-loading"], buttonStyle]}>
+    <TouchableNativeFeedback disabled={disabled} {...props}>
+      <View style={[styles.button, disabled && styles["button-loading"], loading && styles["button-loading"], buttonStyle]}>
         {loading &&
           <ActivityIndicator style={styles["button-loader"]} size="small" color='#fff' />
         }
         {typeof children === 'string' ?
-          <Text style={styles["button-text"]}>{children}</Text> :
+          <>
+            {icon}
+            <Text style={styles["button-text"]}>{children}</Text>
+          </> :
           children
         }
       </View>
