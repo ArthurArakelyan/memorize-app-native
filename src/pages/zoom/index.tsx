@@ -1,7 +1,11 @@
-import React, {FC} from "react";
-import {StyleSheet} from "react-native";
+import React, {FC, useEffect} from "react";
+import {StatusBar, StyleSheet} from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
 import {NavigationProp, RouteProp} from "@react-navigation/native";
+import changeNavigationBarColor from "react-native-navigation-bar-color";
+
+// assets
+import {primaryDark} from "../../assets/global";
 
 interface IZoomProps {
   route: RouteProp<{ params: { url: string } }, 'params'>;
@@ -9,6 +13,16 @@ interface IZoomProps {
 }
 
 const Zoom: FC<IZoomProps> = ({navigation, route}) => {
+  useEffect(() => {
+    changeNavigationBarColor('#000000', false, false);
+    StatusBar.setBackgroundColor('#000', false);
+
+    return () => {
+      changeNavigationBarColor('#F2F2F2', true, false);
+      StatusBar.setBackgroundColor(primaryDark, false);
+    };
+  }, []);
+
   const handleGoBack = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
@@ -21,7 +35,7 @@ const Zoom: FC<IZoomProps> = ({navigation, route}) => {
       onSwipeDown={handleGoBack}
       enableSwipeDown
       renderIndicator={() => <></>}
-      backgroundColor='#fff'
+      backgroundColor="#000"
       imageUrls={[{ url: route.params.url }]}
       style={styles["viewer"]}
     />
