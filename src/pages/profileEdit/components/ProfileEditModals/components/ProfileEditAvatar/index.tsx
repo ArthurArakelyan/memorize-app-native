@@ -11,6 +11,11 @@ import {deleteUserAvatar, uploadUserAvatar} from "../../../../../../store/user/u
 
 // utils
 import upload from "../../../../../../utils/upload";
+import showErrorToast from "../../../../../../utils/showErrorToast";
+import showSuccessToast from "../../../../../../utils/showSuccessToast";
+
+// constants
+import successMessages from "../../../../../../constants/successMessages";
 
 // types
 import {IProfileEditModalProps} from "../../types";
@@ -28,9 +33,11 @@ const ProfileEditAvatar: FC<IProfileEditModalProps> = ({ close }) => {
       try {
         setLoading('upload');
         await dispatch(uploadUserAvatar(img.uri as string));
+        showSuccessToast(successMessages.avatarChange);
         close();
       } catch (e) {
         setLoading('');
+        showErrorToast(e);
       }
     });
   };
@@ -42,9 +49,11 @@ const ProfileEditAvatar: FC<IProfileEditModalProps> = ({ close }) => {
 
     try {
       await dispatch(deleteUserAvatar());
+      showSuccessToast(successMessages.avatarDelete);
       close();
     } catch (e) {
       setLoading('');
+      showErrorToast(e);
     }
   };
 

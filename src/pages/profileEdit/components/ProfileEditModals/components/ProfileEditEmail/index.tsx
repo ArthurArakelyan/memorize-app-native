@@ -12,6 +12,11 @@ import {changeUserEmail} from "../../../../../../store/user/user.actions";
 // utils
 import validateOnce from "../../../../../../utils/validateOnce";
 import {emailValidator} from "../../../../../../utils/customValidators";
+import showSuccessToast from "../../../../../../utils/showSuccessToast";
+import showErrorToast from "../../../../../../utils/showErrorToast";
+
+// constants
+import successMessages from "../../../../../../constants/successMessages";
 
 // types
 import {IProfileEditModalProps} from "../../types";
@@ -50,9 +55,11 @@ const ProfileEditEmail: FC<IProfileEditModalProps> = ({ close }) => {
 
     try {
       await dispatch(changeUserEmail(email));
+      showSuccessToast(successMessages.emailChange);
       close();
     } catch (e) {
       setLoading(false);
+      showErrorToast(e);
     }
   };
 

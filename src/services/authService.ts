@@ -1,5 +1,12 @@
 import auth, {FirebaseAuthTypes} from "@react-native-firebase/auth";
 
+// utils
+import showErrorToast from "../utils/showErrorToast";
+import showSuccessToast from "../utils/showSuccessToast";
+
+// constants
+import successMessages from "../constants/successMessages";
+
 // types
 import {ForgetPasswordData, NewPasswordData, SignUpData} from "../types/UserInput";
 
@@ -11,8 +18,7 @@ class AuthService {
       const {user} = await auth().signInWithEmailAndPassword(email, password);
       return user;
     } catch (e) {
-      console.error('Error in signIn()', e);
-      e instanceof Error && alert(e.message);
+      showErrorToast(e);
     }
   }
 
@@ -21,60 +27,66 @@ class AuthService {
       const {user} = await auth().createUserWithEmailAndPassword(data.email, data.password);
       return user;
     } catch (e) {
-      console.error('Error in signUp()', e);
-      e instanceof Error && alert(e.message);
+      showErrorToast(e);
     }
   }
 
   async signOut(): Promise<void> {
-    await auth().signOut();
+    try {
+      await auth().signOut();
+    } catch (e) {
+      showErrorToast(e);
+      throw e;
+    }
   }
 
   async changePassword({oldPassword, password}: NewPasswordData): Promise<void> {
-    let user = auth().currentUser;
+    try {
+      let user = this.user;
 
-    if (!user) {
-      throw new Error('User is not signed in');
+      await auth().signInWithEmailAndPassword(user.email as string, oldPassword);
+
+      user = this.user;
+
+      await user.updatePassword(password);
+    } catch (e) {
+      showErrorToast(e);
+      throw e;
     }
-
-    await auth().signInWithEmailAndPassword(user.email as string, oldPassword);
-
-    user = auth().currentUser;
-
-    if (!user) {
-      throw new Error('User is not signed in');
-    }
-
-    await user.updatePassword(password);
   }
 
   async changeEmail(email: string): Promise<void> {
-    const user = auth().currentUser;
-
-    if (!user) {
-      throw new Error('User is not signed in');
+    try {
+      const user = this.user;
+      await user.updateEmail(email);
+    } catch (e) {
+      showErrorToast(e);
+      throw e;
     }
-
-    await user.updateEmail(email);
   }
 
   async resetPassword({email}: ForgetPasswordData): Promise<void> {
     try {
       await auth().sendPasswordResetEmail(email);
-      alert('Password reset email successfully sent\n \nPlease check your Email');
+      showSuccessToast(successMessages.passwordReset.message1, successMessages.passwordReset.message2);
     } catch (e) {
-      alert('Something went wrong');
+      showErrorToast(e);
+      throw e;
     }
   }
 
-  get uid(): string {
-    const uid = auth().currentUser?.uid;
+  get user(): FirebaseAuthTypes.User {
+    const current = auth().currentUser;
 
-    if (!uid) {
+    if (!current) {
       throw new Error('User is not signed in');
     }
 
-    return uid;
+    return current;
+  }
+
+  get uid(): string {
+    return this.user?.uid;
   }
 }
 

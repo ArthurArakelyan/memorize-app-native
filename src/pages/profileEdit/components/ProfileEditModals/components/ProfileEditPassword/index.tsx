@@ -11,9 +11,12 @@ import authService from "../../../../../../services/authService";
 // utils
 import handleFormDataChange from "../../../../../../utils/handleFormDataChange";
 import validate from "../../../../../../utils/validate";
+import showErrorToast from "../../../../../../utils/showErrorToast";
+import showSuccessToast from "../../../../../../utils/showSuccessToast";
 
 // constants
 import newPasswordFields from "../../../../../../constants/newPasswordFields";
+import successMessages from "../../../../../../constants/successMessages";
 
 // types
 import {IProfileEditModalProps} from "../../types";
@@ -40,10 +43,11 @@ const ProfileEditPassword: FC<IProfileEditModalProps> = ({ close }) => {
 
     try {
       await authService.changePassword(data);
+      showSuccessToast(successMessages.passwordChange);
       close();
     } catch (e) {
       setLoading(false);
-      e instanceof Error && alert(e.message);
+      showErrorToast(e);
     }
   };
 

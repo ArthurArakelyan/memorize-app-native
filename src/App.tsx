@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {KeyboardAvoidingView, SafeAreaView, StatusBar, StyleSheet} from "react-native";
+import Toast from "react-native-toast-message";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import changeNavigationBarColor from "react-native-navigation-bar-color";
@@ -73,6 +74,7 @@ const App = () => {
               </Stack.Navigator>
             }
           </NavigationContainer>
+          <Toast />
         </KeyboardAvoidingView>
       </SafeAreaView>
     </Providers>

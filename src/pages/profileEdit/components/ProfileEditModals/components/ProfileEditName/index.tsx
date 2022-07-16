@@ -11,6 +11,11 @@ import {changeUserField} from "../../../../../../store/user/user.actions";
 
 // utils
 import validateOnce from "../../../../../../utils/validateOnce";
+import showSuccessToast from "../../../../../../utils/showSuccessToast";
+import showErrorToast from "../../../../../../utils/showErrorToast";
+
+// constants
+import successMessages from "../../../../../../constants/successMessages";
 
 // types
 import {IProfileEditModalProps} from "../../types";
@@ -57,9 +62,12 @@ const ProfileEditName: FC<IProfileEditModalProps> = ({ close }) => {
         value: name,
       }));
 
+      showSuccessToast(successMessages.nameChange);
+
       close();
     } catch (e) {
       setLoading(false);
+      showErrorToast(e);
     }
   };
 

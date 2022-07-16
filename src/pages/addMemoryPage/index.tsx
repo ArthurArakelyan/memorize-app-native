@@ -16,12 +16,15 @@ import {addMemory} from "../../store/memories/memories.actions";
 import handleFormDataChange from "../../utils/handleFormDataChange";
 import validate from "../../utils/validate";
 import upload from "../../utils/upload";
+import showErrorToast from "../../utils/showErrorToast";
+import showSuccessToast from "../../utils/showSuccessToast";
 
 // hooks
 import useNavigate from "../../hooks/useNavigate";
 
 // constants
 import addMemoryFields from "../../constants/addMemoryFields";
+import successMessages from "../../constants/successMessages";
 
 // types
 import {MemoryData} from "../../types/UserInput";
@@ -42,7 +45,7 @@ const AddMemoryPage = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     !submitted && setSubmitted(true);
 
     if (!validate(data, addMemoryFields)) {
@@ -51,10 +54,14 @@ const AddMemoryPage = () => {
 
     setLoading(true);
 
-    dispatch(addMemory(data)).finally(() => {
-      setLoading(false);
+    try {
+      await dispatch(addMemory(data));
+      showSuccessToast(successMessages.addMemory);
       navigate('home');
-    });
+    } catch (e) {
+      setLoading(false);
+      showErrorToast(e);
+    }
   };
 
   const handleChange = handleFormDataChange<MemoryData>(setData);
