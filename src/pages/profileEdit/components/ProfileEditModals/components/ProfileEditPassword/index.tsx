@@ -2,8 +2,8 @@ import React, {FC, useState} from "react";
 import {StyleSheet, View} from "react-native";
 
 // components
-import Fields from "../../../../../../components/Fields";
-import Button from "../../../../../../components/Button";
+import Fields from "../../../../../../components/shared/Fields";
+import Button from "../../../../../../components/shared/Button";
 
 // services
 import authService from "../../../../../../services/authService";

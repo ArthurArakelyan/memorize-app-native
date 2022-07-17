@@ -3,8 +3,8 @@ import {StyleSheet, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 
 // components
-import Field from "../../../../../../components/Field";
-import Button from "../../../../../../components/Button";
+import Field from "../../../../../../components/shared/Field";
+import Button from "../../../../../../components/shared/Button";
 
 // actions
 import {changeUserEmail} from "../../../../../../store/user/user.actions";

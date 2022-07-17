@@ -6,8 +6,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import AntIcon from "react-native-vector-icons/AntDesign";
 
 // components
-import Fields from "../../components/Fields";
-import Button from "../../components/Button";
+import {Fields, Button} from "../../components/shared";
 
 // actions
 import {addMemory} from "../../store/memories/memories.actions";

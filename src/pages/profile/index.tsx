@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 // components
 import ProfileAvatar from "./components/ProfileAvatar";
 import ProfilePosts from "./components/ProfilePosts";
-import Button from "../../components/Button";
+import Button from "../../components/shared/Button";
 
 // hooks
 import useNavigate from "../../hooks/useNavigate";

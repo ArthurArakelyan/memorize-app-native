@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 // assets
-import {medium, primaryColor} from "../../assets/global";
+import {medium, primaryColor} from "../../../assets/global";
 
 interface IButtonProps extends TouchableNativeFeedbackProps {
   loading?: boolean;

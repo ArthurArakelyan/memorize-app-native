@@ -5,8 +5,8 @@ import {TextInputProps} from "react-native";
 import Field from "../Field";
 
 // types
-import IField from "../../types/Field";
-import {UserInput} from "../../types/UserInput";
+import IField from "../../../types/Field";
+import {UserInput} from "../../../types/UserInput";
 
 interface IFieldsProps extends TextInputProps {
   fields: IField[];

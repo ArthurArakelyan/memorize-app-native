@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 // components
-import Button from "../../../../../../components/Button";
+import Button from "../../../../../../components/shared/Button";
 
 // actions
 import {deleteUserAvatar, uploadUserAvatar} from "../../../../../../store/user/user.actions";

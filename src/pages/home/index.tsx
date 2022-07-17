@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 
 // components
 import Memories from "./components/Memories";
-import FloatingActionButton from "../../components/FloatingActionButton";
+import FloatingActionButton from "../../components/shared/FloatingActionButton";
 
 // hooks
 import useNavigate from "../../hooks/useNavigate";

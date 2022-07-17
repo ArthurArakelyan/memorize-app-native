@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 // components
 import ProfileEditOption from "./components/ProfileEditOption";
 import ProfileEditModals from "./components/ProfileEditModals";
-import ConfirmationModal from "../../components/ConfirmationModal";
+import ConfirmationModal from "../../components/shared/ConfirmationModal";
 
 // actions
 import {signOut} from "../../store/user/user.actions";

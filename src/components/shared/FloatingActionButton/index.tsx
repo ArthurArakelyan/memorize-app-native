@@ -1,9 +1,9 @@
-import React, {FC} from "react";
+import React, {FC, memo} from "react";
 import {StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 import {FAB} from "react-native-paper";
 
 // assets
-import {purple} from "../../assets/global";
+import {purple} from "../../../assets/global";
 
 interface IFloatingActionButtonProps {
   onPress: () => void;
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FloatingActionButton;
+export default memo(FloatingActionButton);

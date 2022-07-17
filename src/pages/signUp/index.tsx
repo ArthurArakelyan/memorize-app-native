@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 
 // components
 import Auth from "../../components/common/Auth";
-import Fields from "../../components/Fields";
+import Fields from "../../components/shared/Fields";
 
 // actions
 import {signUp} from "../../store/user/user.actions";

@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 
 // components
-import Button from "../../Button";
+import Button from "../../shared/Button";
 
 // assets
 import {gray, medium, regular, secondaryColor} from "../../../assets/global";

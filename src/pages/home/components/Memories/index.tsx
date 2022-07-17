@@ -3,7 +3,7 @@ import {ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, View} fro
 import {useDispatch, useSelector} from "react-redux";
 
 // components
-import Button from "../../../../components/Button";
+import Button from "../../../../components/shared/Button";
 import Memory from "./Memory";
 
 // hooks

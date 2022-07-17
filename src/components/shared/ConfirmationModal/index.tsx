@@ -2,11 +2,11 @@ import React, {FC, memo} from "react";
 import {StyleSheet, Text, View} from "react-native";
 
 // components
-import {Modal} from "../shared";
+import {Modal} from "../index";
 import Button from "../Button";
 
 // assets
-import {darkColor, regular} from "../../assets/global";
+import {darkColor, regular} from "../../../assets/global";
 
 interface IConfirmationModalProps {
   text: string;

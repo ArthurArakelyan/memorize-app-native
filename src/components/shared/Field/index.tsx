@@ -1,14 +1,18 @@
-import React, {FC, useEffect, useState} from "react";
-import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle} from "react-native";
+import React, {FC, useEffect, useState, memo} from "react";
+import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle, Animated} from "react-native";
 
 // utils
-import validateOnce from "../../utils/validateOnce";
+import validateOnce from "../../../utils/validateOnce";
+
+// hooks
+import useAnimation from "../../../hooks/useAnimation";
+import useFocus from "../../../hooks/useFocus";
 
 // types
-import Validator from "../../types/Validator";
+import Validator from "../../../types/Validator";
 
 // assets
-import {darkColor, gray, regular} from "../../assets/global";
+import {darkColor, gray, primaryColor, regular} from "../../../assets/global";
 
 interface FieldProps extends TextInputProps {
   submitted?: boolean;
@@ -19,6 +23,14 @@ interface FieldProps extends TextInputProps {
 
 const Field: FC<FieldProps> = ({ label, submitted, validator, viewStyle, onChangeText, value, style, ...props }) => {
   const [error, setError] = useState<string>('');
+
+  const {focused, focusHandlers} = useFocus();
+
+  const errorAnim = useAnimation(0, {
+    toValue: 1,
+    duration: 500,
+    start: !!error,
+  });
 
   const validate = (value: string) => {
     if (submitted && validator) {
@@ -45,12 +57,16 @@ const Field: FC<FieldProps> = ({ label, submitted, validator, viewStyle, onChang
     <View style={[styles["field"], viewStyle]}>
       {!!label && <Text style={styles["field-label"]}>{label}</Text>}
       <TextInput
-        selectionColor="#000" style={[styles["field-input"], style]}
+        selectionColor="#000"
+        style={[styles["field-input"], focused && styles["field-input__focused"], !!error && styles["field-input__error"], style]}
         onChangeText={handleChange}
         value={value}
+        {...focusHandlers}
         {...props}
       />
-      {!!error && <Text style={styles["field-error"]}>{error}</Text>}
+      {!!error && <Animated.Text style={[styles["field-error"], {opacity: errorAnim}]}>
+        {error}
+      </Animated.Text>}
     </View>
   );
 };
@@ -78,6 +94,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: gray,
   },
+  'field-input__error': {
+    borderColor: '#ff0000',
+  },
+  'field-input__focused': {
+    borderColor: primaryColor,
+  },
   'field-error': {
     position: 'absolute',
     color: '#f00',
@@ -87,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Field;
+export default memo(Field);
