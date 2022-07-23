@@ -1,5 +1,9 @@
 const addLeadingZero = (number: number): string => {
-  return `${number < 10 ? '0' : ''}${number}`;
+  if (isNaN(number)) {
+    return '';
+  }
+
+  return `${(number < 10 && number > 0) ? '0' : ''}${number}`;
 };
 
 export default addLeadingZero;

@@ -10,5 +10,11 @@ export const getMonthName = (date: Date): string => {
 };
 
 export const getShortMonthName = (date: Date): string => {
+  const month = getMonthName(date);
+
+  if (!month) {
+    return '';
+  }
+
   return getMonthName(date).slice(0, 3);
 };
